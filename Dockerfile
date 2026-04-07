@@ -9,8 +9,8 @@ ENV CHROME_BIN=/usr/bin/chromium
 ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
 RUN pip install --no-cache-dir flask gunicorn requests beautifulsoup4 \
-  lxml selenium webdriver-manager dateparser
-
+  lxml selenium webdriver-manager dateparser holidays
+  
 # Copy the OUTER folder so internal imports resolve correctly
 RUN git clone --depth 1 https://github.com/robbrad/UKBinCollectionData.git /tmp/ukbc \
   && cp -r /tmp/ukbc/uk_bin_collection /app/uk_bin_collection \
