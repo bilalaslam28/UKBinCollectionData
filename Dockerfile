@@ -8,15 +8,13 @@ RUN apt-get update && apt-get install -y git chromium chromium-driver \
 ENV CHROME_BIN=/usr/bin/chromium
 ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
-# Clone the full repo
-RUN git clone --depth 1 https://github.com/robbrad/UKBinCollectionData.git /tmp/ukbc
-
-# Copy the actual source package directly into our app
-RUN cp -r /tmp/ukbc/uk_bin_collection /app/uk_bin_collection
-
-# Install dependencies
+# Install Python dependencies
 RUN pip install --no-cache-dir flask gunicorn requests beautifulsoup4 \
-  lxml selenium webdriver-manager dateparser \
+  lxml selenium webdriver-manager dateparser
+
+# Clone the full repo and copy source directly
+RUN git clone --depth 1 https://github.com/robbrad/UKBinCollectionData.git /tmp/ukbc \
+  && cp -r /tmp/ukbc/uk_bin_collection/uk_bin_collection /app/uk_bin_collection \
   && rm -rf /tmp/ukbc
 
 COPY app.py .
