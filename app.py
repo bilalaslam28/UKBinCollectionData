@@ -13,7 +13,12 @@ def get_bins():
         return jsonify({"error": "council parameter is required"}), 400
 
     try:
-        args = [council, "https://example.com", "-u", uprn, "-p", postcode]
+        args = [council, "https://example.com"]
+        if uprn:
+            args += ["-u", uprn]
+        if postcode:
+            args += ["-p", postcode]
+
         result = UKBinCollectionApp().run(args)
         return jsonify(result)
     except Exception as e:
