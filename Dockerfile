@@ -9,7 +9,9 @@ ENV CHROME_BIN=/usr/bin/chromium
 ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
 RUN pip install --no-cache-dir flask gunicorn requests beautifulsoup4 \
-  lxml selenium webdriver-manager dateparser holidays
+  lxml selenium webdriver-manager dateparser holidays pandas \
+  icalendar pyaml aiohttp aiofiles icalendar urllib3 \
+  jsonschema python-dateutil tabulate
   
 # Copy the OUTER folder so internal imports resolve correctly
 RUN git clone --depth 1 https://github.com/robbrad/UKBinCollectionData.git /tmp/ukbc \
