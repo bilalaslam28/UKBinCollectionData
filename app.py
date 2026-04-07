@@ -1,0 +1,24 @@
+from flask import Flask, request, jsonify
+from uk_bin_collection.collect_data import UKBinCollectionApp
+
+app = Flask(__name__)
+
+@app.route("/")
+def get_bins():
+    council = request.args.get("council")
+    uprn = request.args.get("uprn", "")
+    postcode = request.args.get("postcode", "")
+
+    if not council:
+        return jsonify({"error": "council parameter is required"}), 400
+
+    try:
+        args = [council, "https://example.com", "-u", uprn, "-p", postcode]
+        result = UKBinCollectionApp().run(args)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok"})
