@@ -8,10 +8,10 @@ RUN apt-get update && apt-get install -y git chromium chromium-driver \
 ENV CHROME_BIN=/usr/bin/chromium
 ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
-RUN pip install --no-cache-dir flask gunicorn
-
-RUN pip install --no-cache-dir \
-  "git+https://github.com/robbrad/UKBinCollectionData.git"
+RUN git clone --depth 1 https://github.com/robbrad/UKBinCollectionData.git /tmp/ukbc \
+  && pip install --no-cache-dir flask gunicorn \
+  && cd /tmp/ukbc && pip install --no-cache-dir . \
+  && rm -rf /tmp/ukbc
 
 COPY app.py .
 
