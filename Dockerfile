@@ -2,12 +2,16 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git chromium chromium-driver \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
 RUN pip install --no-cache-dir flask gunicorn
 
 RUN pip install --no-cache-dir \
-  "git+https://github.com/robbrad/UKBinCollectionData.git#subdirectory=uk_bin_collection"
+  "git+https://github.com/robbrad/UKBinCollectionData.git"
 
 COPY app.py .
 
