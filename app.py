@@ -1,8 +1,28 @@
 import sys
 import json
+import subprocess
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
+
+@app.route("/debug")
+def debug():
+    # Show installed packages and try to find the right module
+    try:
+        import uk_bin_collection
+        module_path = uk_bin_collection.__file__
+        
+        # List everything available in the package
+        import pkgutil
+        modules = [m.name for m in pkgutil.iter_modules(uk_bin_collection.__path__)]
+        
+        return jsonify({
+            "module_path": module_path,
+            "available_modules": modules,
+            "python_version": sys.version
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 @app.route("/")
 def get_bins():
@@ -23,8 +43,6 @@ def get_bins():
             args += ["-p", postcode]
 
         result = UKBinCollectionApp().run(args)
-
-        # Result may be a string or dict depending on version
         if isinstance(result, str):
             result = json.loads(result)
 
